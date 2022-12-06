@@ -1,7 +1,7 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { PlanetService } from './planet.service';
 
 @Controller('planet')
 export class PlanetController {
-  constructor(private readonly planetService: PlanetService) {}
+  constructor(private readonly planetService: PlanetService) { }
 }
