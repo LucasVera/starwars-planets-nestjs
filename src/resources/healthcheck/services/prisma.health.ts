@@ -68,7 +68,6 @@ export class PrismaHealthIndicator extends HealthIndicator {
     timeout: number,
   ) {
     let check: Promise<any> = Promise.resolve();
-
     switch (provider) {
       case 'mongodb':
         // check = this.checkMongoDBConnection(connection);
@@ -102,7 +101,6 @@ export class PrismaHealthIndicator extends HealthIndicator {
   ): Promise<HealthIndicatorResult> {
     let isHealthy = false;
     this.checkDependantPackages();
-
     const connection = options.connection;
     const timeout = options.timeout || 1000;
 

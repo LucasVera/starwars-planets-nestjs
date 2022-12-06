@@ -16,16 +16,18 @@ export class HealthcheckController {
     private memory: MemoryHealthIndicator,
     private prisma: PrismaHealthIndicator,
     private prismaService: PrismaService,
-  ) {}
+  ) { }
 
   @Get()
   @HealthCheck()
   healthCheck() {
     const prismaSettings = {
       connection: this.prismaService,
-      provider: 'postgresql',
+      provider: 'sqlite',
       timeout: 5000,
     };
+
+
 
     // Check Services connection
     return this.health.check([
