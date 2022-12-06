@@ -35,8 +35,12 @@ export class PlanetService {
     } } = await this.axiosService.get<SwapiSearchPlanetsResponse>(url)
 
     if (!Array.isArray(swapiPlanets) || swapiPlanets.length <= 0) return []
-    const promises = this.swapiPlanetsToDbPlanets(swapiPlanets).map(planet => this.prismaService.planets.create({
-      data: planet,
+
+    // Upsert to prevent re-creation of the same planets (unique field to check: name)
+    const promises = this.swapiPlanetsToDbPlanets(swapiPlanets).map(planet => this.prismaService.planets.upsert({
+      where: { name: planet.name },
+      create: planet,
+      update: planet,
     }))
 
     const createdPlanets = await Promise.all(promises)
