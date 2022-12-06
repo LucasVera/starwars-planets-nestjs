@@ -20,6 +20,7 @@ export class AxiosService {
       const errorMsg = error && error instanceof Error
         ? error.message
         : inspect(error)
+
       this.logger.error(`Axios Request Failed. Error: ${errorMsg}`)
       throw error
     }

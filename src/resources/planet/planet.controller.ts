@@ -35,7 +35,6 @@ export class PlanetController {
       return planetsResult
     }
     catch (ex) {
-      console.log(ex)
       this.logger.error('Error searching planets by name.', ex)
     }
   }
