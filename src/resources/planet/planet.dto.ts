@@ -17,45 +17,50 @@ export class GetPlanetDto {
 
   @ApiProperty({
     description: 'Name of the planet',
-    example: 'Tatooine',
+    example: 'Dantooine',
   })
   name: string
 
   @ApiProperty({
     description: 'Diameter of the planet',
-    example: '100',
+    example: '9830',
   })
   diameter: string
 
   @ApiProperty({
     description: 'Gravity of the planet',
-    example: '2',
+    example: '1 standard',
   })
   gravity: string
 
   @ApiProperty({
     description: 'Type of terrain of the planet',
-    example: '24',
+    example: 'oceans, savannas, mountains, grasslands',
   })
   terrain: string
 
   @ApiProperty({
     description: 'Created date and time of the planet',
-    example: '24',
+    example: '2014-12-10T17:23:29.896000Z',
   })
   created: string
 
   @ApiProperty({
     description: 'Edited date and time of the planet',
-    example: '24',
+    example: '2014-12-10T17:23:29.896000Z',
   })
   edited: string
 
   @ApiProperty({
-    description: 'Planet deleted at timestamp',
-    example: '24',
+    description: 'Planet deleted at timestamp. null if planet has not been deleted',
+    example: 'null',
   })
   deletedAt?: string
+}
+
+export class GetPlanetResponse {
+  @ApiProperty({ type: () => GetPlanetDto })
+  data: GetPlanetDto
 }
 
 export interface SwapiSearchPlanetsResponse {

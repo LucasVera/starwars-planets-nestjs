@@ -42,13 +42,17 @@ export class PlanetController {
 
   @Get('/:id')
   @ApiBearerAuth('access-token')
+  @ApiParam({
+    name: 'id',
+    description: 'Id of the planet to fetch. If not found, the return is a 404 with a not found message',
+    type: String,
+  })
   @UseGuards(AuthGuard)
   @UseGuards(ValidIdParamGuard)
   public async getPlanet(
     @Param('id') id: number,
   ) {
-
-    return id
+    const planet = await this.planetService.getPlanetById(id)
+    return planet
   }
-
 }
