@@ -1,7 +1,8 @@
-import { Controller, Get, HttpStatus, Logger, Query } from '@nestjs/common';
-import { ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, HttpStatus, Logger, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PlanetService } from './planet.service';
 import { GetPlanetsResponse } from './planet.dto';
+import { AuthGuard } from '@/guards/auth.guard';
 
 @ApiTags('Planet')
 @Controller('planet')
@@ -37,4 +38,15 @@ export class PlanetController {
       this.logger.error('Error searching planets by name.', ex)
     }
   }
+
+  @Get('/:id')
+  @ApiBearerAuth('access-token')
+  @UseGuards(AuthGuard)
+  public async getPlanet(
+    @Param('id') id: number,
+  ) {
+    console.log('id', id)
+    return id
+  }
+
 }

@@ -50,6 +50,14 @@ async function bootstrap() {
       .setTitle('Boilerplate API')
       .setDescription('Example docs')
       .setVersion(config.get('npm_package_version') as string)
+      .addBearerAuth({
+        description: "Add token in the following format: 'Bearer {token}'. For testing purposes, use the string 'dummy_token'",
+        name: 'Authorization',
+        bearerFormat: 'Bearer',
+        scheme: 'Bearer',
+        type: 'http',
+        in: 'Header',
+      }, 'access-token')
       .build();
     const document = SwaggerModule.createDocument(app, swaggerConfig);
     SwaggerModule.setup('api', app, document);
