@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "Planets" (
+CREATE TABLE "Planet" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT NOT NULL,
     "diameter" TEXT NOT NULL,
@@ -9,3 +9,6 @@ CREATE TABLE "Planets" (
     "edited" TEXT NOT NULL,
     "deletedAt" TEXT
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Planet_name_key" ON "Planet"("name");

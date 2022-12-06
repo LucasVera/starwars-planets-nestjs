@@ -1,7 +1,8 @@
 import { PrismaService } from '@/db/prisma/services/prisma.service';
 import { AxiosService } from '@/util/axios/axios.service';
+import { NotFoundException } from '@/util/exceptions/notFound.exception';
 import { Injectable, Logger } from '@nestjs/common';
-import { Planets } from '@prisma/client';
+import { Planet } from '@prisma/client';
 import { GetPlanetDto, GetPlanetsResponse, SwapiPlanet, SwapiSearchPlanetsResponse } from './planet.dto';
 
 @Injectable()
@@ -20,7 +21,7 @@ export class PlanetService {
     //    store the results in db and then return them
     // 3. if results of api are more than 10, show "next page"
 
-    const dbPlanet = await this.prismaService.planets.findFirst({
+    const dbPlanet = await this.prismaService.planet.findFirst({
       where: { name }
     })
     if (dbPlanet?.name === name) {
@@ -50,7 +51,7 @@ export class PlanetService {
     }
 
     // Upsert to prevent re-creation of the same planets (unique field to check: name)
-    const promises = this.swapiPlanetsToDbPlanets(swapiPlanets).map(planet => this.prismaService.planets.upsert({
+    const promises = this.swapiPlanetsToDbPlanets(swapiPlanets).map(planet => this.prismaService.planet.upsert({
       where: { name: planet.name },
       create: planet,
       update: planet,
@@ -69,7 +70,14 @@ export class PlanetService {
     }
   }
 
-  private dbPlanetsToDto = (dbPlanets: Planets[]): GetPlanetDto[] => dbPlanets.map(({
+  public async getPlanetById(id: number): Promise<GetPlanetDto> {
+    const planet = await this.prismaService.planet.findFirst({ where: { id } })
+    if (!planet || !planet.id) throw new NotFoundException()
+
+    return this.dbPlanetsToDto([planet])[0]
+  }
+
+  private dbPlanetsToDto = (dbPlanets: Planet[]): GetPlanetDto[] => dbPlanets.map(({
     id,
     name,
     diameter,
@@ -89,7 +97,7 @@ export class PlanetService {
     deletedAt,
   }))
 
-  private swapiPlanetsToDbPlanets = (swapiPlanets: SwapiPlanet[]): Planets[] => swapiPlanets.map(({
+  private swapiPlanetsToDbPlanets = (swapiPlanets: SwapiPlanet[]): Planet[] => swapiPlanets.map(({
     name,
     diameter,
     gravity,

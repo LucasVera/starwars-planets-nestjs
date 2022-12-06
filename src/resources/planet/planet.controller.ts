@@ -3,6 +3,7 @@ import { ApiBearerAuth, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs
 import { PlanetService } from './planet.service';
 import { GetPlanetsResponse } from './planet.dto';
 import { AuthGuard } from '@/guards/auth.guard';
+import { ValidIdParamGuard } from '@/guards/validIdParam.guard';
 
 @ApiTags('Planet')
 @Controller('planet')
@@ -42,10 +43,11 @@ export class PlanetController {
   @Get('/:id')
   @ApiBearerAuth('access-token')
   @UseGuards(AuthGuard)
+  @UseGuards(ValidIdParamGuard)
   public async getPlanet(
     @Param('id') id: number,
   ) {
-    console.log('id', id)
+
     return id
   }
 
