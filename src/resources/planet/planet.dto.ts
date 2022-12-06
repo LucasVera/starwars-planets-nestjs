@@ -3,6 +3,9 @@ import { ApiProperty } from "@nestjs/swagger";
 export class GetPlanetsResponse {
   @ApiProperty({ type: () => [GetPlanetDto] })
   data: GetPlanetDto[]
+  total: number
+  currentPageSize: number
+  nextPage: number | null
 }
 
 export class GetPlanetDto {

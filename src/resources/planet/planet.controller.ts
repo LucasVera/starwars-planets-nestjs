@@ -17,19 +17,24 @@ export class PlanetController {
     allowEmptyValue: false,
     description: 'Name of the planet to search'
   })
+  @ApiQuery({
+    name: 'nextPage',
+    type: Number,
+    allowEmptyValue: false,
+    required: false,
+    description: 'Next page number to query results',
+  })
   public async getPlanets(
     @Query('name') name: string,
+    @Query('nextPage') nextPage?: number,
   ): Promise<GetPlanetsResponse> {
     try {
-      console.log('name', name)
-      const planets = await this.planetService.getPlanetsByName(name)
-      return {
-        data: planets,
-      }
+      const planetsResult = await this.planetService.getPlanetsByName(name, nextPage)
+      return planetsResult
     }
     catch (ex) {
       console.log(ex)
-      this.logger.error('Error searching planets by name.')
+      this.logger.error('Error searching planets by name.', ex)
     }
   }
 }
