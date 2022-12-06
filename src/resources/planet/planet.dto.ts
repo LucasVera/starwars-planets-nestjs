@@ -1,19 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
 
 export class GetPlanetsResponse {
-  @ApiProperty({ type: () => [GetPlanetResultDto] })
-  data: GetPlanetResultDto[]
+  @ApiProperty({ type: () => [GetPlanetDto] })
+  data: GetPlanetDto[]
 }
 
 export class GetPlanetDto {
-  @ApiProperty({
-    description: 'Name of the planet to search',
-    example: 'tatooine',
-  })
-  name: string
-}
-
-export class GetPlanetResultDto {
   @ApiProperty({
     description: 'Local id of the planet',
     example: 24,
@@ -55,4 +47,34 @@ export class GetPlanetResultDto {
     example: '24',
   })
   edited: string
+
+  @ApiProperty({
+    description: 'Planet deleted at timestamp',
+    example: '24',
+  })
+  deletedAt?: string
+}
+
+export interface SwapiSearchPlanetsResponse {
+  count: number
+  next: string | null,
+  previous: string | null,
+  results: SwapiPlanet[]
+}
+
+export class SwapiPlanet {
+  name: string
+  rotation_period: string
+  orbital_period: string
+  diameter: string
+  climate: string
+  gravity: string
+  terrain: string
+  surface_water: string
+  population: string
+  residents: [string]
+  films: [string]
+  created: string
+  edited: string
+  url: string
 }
