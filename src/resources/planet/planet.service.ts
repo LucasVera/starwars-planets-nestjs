@@ -77,6 +77,17 @@ export class PlanetService {
     return this.dbPlanetsToDto([planet])[0]
   }
 
+  public async deletePlanetById(id: number): Promise<Planet> {
+    // check if planet is found
+    await this.getPlanetById(id);
+
+    const deletedPlanet = await this.prismaService.planet.delete({
+      where: { id }
+    })
+
+    return deletedPlanet
+  }
+
   private dbPlanetsToDto = (dbPlanets: Planet[]): GetPlanetDto[] => dbPlanets.map(({
     id,
     name,

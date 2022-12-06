@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, Logger, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, HttpStatus, Logger, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PlanetService } from './planet.service';
 import { GetPlanetsResponse } from './planet.dto';
@@ -53,6 +53,22 @@ export class PlanetController {
     @Param('id') id: number,
   ) {
     const planet = await this.planetService.getPlanetById(id)
+    return planet
+  }
+
+  @Delete('/:id')
+  @ApiBearerAuth('access-token')
+  @ApiParam({
+    name: 'id',
+    description: 'Id of the planet to delete. If planet is not found, the return is a 404 with a not found message',
+    type: String,
+  })
+  @UseGuards(AuthGuard)
+  @UseGuards(ValidIdParamGuard)
+  public async deletePlanet(
+    @Param('id') id: number,
+  ) {
+    const planet = await this.planetService.deletePlanetById(id)
     return planet
   }
 }
